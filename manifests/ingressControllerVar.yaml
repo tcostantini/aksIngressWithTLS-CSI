@@ -1,0 +1,19 @@
+controller:
+  podLabels:
+    aadpodidbinding: "${pod_id_name}"
+  replicaCount: 2
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  defaultBackend:
+    kubernetes.io/os: "linux"
+  extraVolumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "${key_vault_name}"
+  extraVolumeMounts:
+      - name: secrets-store-inline
+        mountPath: "/mnt/secrets-store"
+        readOnly: true
